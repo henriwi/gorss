@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>BEKK Open</title>
+    <description>BEKK Open er BEKKs fagblogg og drives av og for våre ansatte.</description>
+    <link>http://open.bekk.no</link>
+    <item>
+      <title>Event Driven and Functional Reactive Programming, Step by Step.</title>
+      <description><![CDATA[The aim of this blogpost is to explore the differences between Event Driven Programming and Functional Reactive Programming(FRP) by implementing the same set of functionality with both techinques. I will walk through the two implementations step by step explaining the process as I go along.]]></description>
+      <pubDate>15.10.2013</pubDate>
+      <link>http://open.bekk.no/event-driven-and-functional-reactive-programming-step-by-step</link>
+    </item>
+    <item>
+      <title>¨Min oversikt¨- SpareBank 1</title>
+      <description><![CDATA[We recently entered ¨Min oversikt¨ into an ux design competiton, and thought we would take the opportunity to share our story about the solution and process on Bekk Open. Happy reading! ]]></description>
+      <pubDate>01.10.2013</pubDate>
+      <link>http://open.bekk.no/min-oversikt</link>
+    </item>
+    <item>
+      <title>Flow in Agile Software Development: What, Why and How.</title>
+      <description><![CDATA[Wouldn’t it be great to be able to perform a task while fully immersed in a feeling of energized focus, a state where every action, movement, and thought follows inevitably from the previous one, where your whole being is involved, and you’re using your skills to the utmost? Welcome to the flow.]]></description>
+      <pubDate>29.09.2013</pubDate>
+      <link>http://open.bekk.no/flow-in-agile-software-development-what-why-and-how</link>
+    </item>
+    <item>
+      <title>Making a Collaborative Piano Using Functional Reactive Programming (FRP)</title>
+      <description><![CDATA[To learn more about functional reactive programming, I started making a simple collaborative piano using  JavaScript/CoffeeScript. This blog post shows how Functional Reactive Programming can make the task of taking multiple event inputs and merging them into one discrete sequence of interactions really easy – a task that could otherwise be potentially complex and very unstructured and hard to read.]]></description>
+      <pubDate>24.09.2013</pubDate>
+      <link>http://open.bekk.no/making-a-collaborative-piano-using-functional-reactive-programming-frp</link>
+    </item>
+    <item>
+      <title>Fra kundeorientering til kundesentrering</title>
+      <description><![CDATA[Kundeorientering - å innrette organisasjonen for å effektivt kunne imøtekomme kundenes ønsker - er ikke tilstrekkelig. Selskaper må utvide sitt fokus fra relasjonen mellom seg og sin kunde til også å dekke relasjonen mellom kunden og dens kunder og relasjoner.]]></description>
+      <pubDate>22.09.2013</pubDate>
+      <link>http://open.bekk.no/fra-kundeorientering-til-kundesentrering</link>
+    </item>
+    <item>
+      <title>Writing Maintainable Tests for Backbone Views</title>
+      <description><![CDATA[Testing complex Backbone.js views can be painful. These views often contain quite a bit of markup and logic, resulting in cluttered and brittle tests that are difficult to understand. Additionally, we often end up duplicating DOM selectors and Ajax responses.
+
+In this blog post we'll show one way of writing clean and maintainable tests for Backbone views.]]></description>
+      <pubDate>16.09.2013</pubDate>
+      <link>http://open.bekk.no/maintainable-tests-for-backbone-views</link>
+    </item>
+    <item>
+      <title>Kundeorientering er ikke nok</title>
+      <description><![CDATA[Kundeorientering er en nødvendig forutsetning for å være konkurransedyktig i dagens marked, men det er ikke tilstrekkelig for å være relevant og oppnå en vedvarende konkurransekraft og lønnsomhet fremover.]]></description>
+      <pubDate>16.09.2013</pubDate>
+      <link>http://open.bekk.no/kundeorientering-er-ikke-nok</link>
+    </item>
+    <item>
+      <title>Hvorfor er netthandel en stor bekymring for handelsstanden?</title>
+      <description><![CDATA[Netthandelen vokser kraftig. Dobbelt så mye som butikkhandelen i fjor. I år ser det ut til at det blir ennå større forskjell sies det. Mange fysiske butikker ser dette som en trussel og ikke som den muligheten til kundeorientering og mersalg som nettbaserte handelskonsepter gir dem.]]></description>
+      <pubDate>13.09.2013</pubDate>
+      <link>http://open.bekk.no/hvorfor-er-netthandel-en-stor-bekymring-for-handelsstanden</link>
+    </item>
+    <item>
+      <title>Animerte skisser til dine HTML5 slides</title>
+      <description><![CDATA[Ønsker du å ha animerte skisser med bokser og piler i HTML5-slidesettet ditt? Selvfølgelig gjør du det! Her er et lite bibliotek som kan hjelpe deg med nettopp dette.]]></description>
+      <pubDate>09.09.2013</pubDate>
+      <link>http://open.bekk.no/animerte-figurer-til-dine-html5-slides</link>
+    </item>
+    <item>
+      <title>Composite architecture with JavaScript</title>
+      <description><![CDATA[Designing and building rich JavaScript client applications that are flexible and easy to maintain can be challenging.]]></description>
+      <pubDate>06.09.2013</pubDate>
+      <link>http://open.bekk.no/composite-architecture-with-javascript</link>
+    </item>
+    <item>
+      <title>Kundeorientering á 140 tegn</title>
+      <description><![CDATA[Bloggere flest twitrer ivrig om egne blogginnlegg for å gi dem litt ekstra oppmerksomhet. Meg selv inkludert. Denne gangen skal jeg imidlertid gjøre det motsatte og heller blogge om noe som allerede har blitt twitret - nærmere bestemt tweets fra Dialogkonferansen 2013. Dette er blogginnlegget som søker å gi svar på de vanligste spørsmålene om kundeorientering - på 140 tegn.]]></description>
+      <pubDate>06.09.2013</pubDate>
+      <link>http://open.bekk.no/kundeorientering140tegn</link>
+    </item>
+    <item>
+      <title>Continuations og CPS</title>
+      <description><![CDATA[Hva er egentlig continuations? Hva kan de brukes til? Hvordan kan en programmere i Continuation Passing Style (CPS)? Og hvordan påvirker det programmene?]]></description>
+      <pubDate>02.09.2013</pubDate>
+      <link>http://open.bekk.no/continuations-og-cps</link>
+    </item>
+    <item>
+      <title>Forretningsutvikling i det 21. århundre: ”Kunde først”</title>
+      <description><![CDATA[Rammebetingelsene for forretningsutvikling har endret seg betraktelig siden slutten på forrige århundre. Det å utvikle nye produkter og tjenester har blitt stadig dyrere og livssyklusen til nyvinninger i markedet stadig kortere. Hvordan kan virksomheter øke sannsynligheten for suksess lurer du? – Tenk kunde først, sier jeg!]]></description>
+      <pubDate>29.08.2013</pubDate>
+      <link>http://open.bekk.no/forretningsutvikling-kunde-forst</link>
+    </item>
+    <item>
+      <title>Stripping your way to a newer, better, sexier you! or This is Graphic Design today.</title>
+      <description><![CDATA[Historically, all design (graphic, product, interior etc.) and its production has been steered by fashion, the new materials and possibilities of the times, and, as is the way of the world, a response to these styles inevitably arises. With this post I’ll present a quick look into why the latest design aesthetic has arrived.]]></description>
+      <pubDate>22.08.2013</pubDate>
+      <link>http://open.bekk.no/stripping-your-way-to-a-newer-better-sexier-you</link>
+    </item>
+    <item>
+      <title>Et tilbakeblikk på BEKK UX Cup 2013</title>
+      <description><![CDATA[Nå er det snart tid for kvalifiseringsrunden til BEKK UX Cup 2014, og vi benytter anledningen til et lite tilbakeblikk på fjorårets konkurranse.]]></description>
+      <pubDate>19.08.2013</pubDate>
+      <link>http://open.bekk.no/tilbakeblikk-pa-bekk-ux-cup-2013</link>
+    </item>
+    <item>
+      <title>Oppdag nye verdener med kreativ datavisualisering</title>
+      <description><![CDATA[Vi påstår at datavisualisering kan gjøre oss alle til smarte oppdagere. Hva er forresten forskjellen på datavisualisering og infografikk? Følg vårt (to designeres) møte med en av verdens fremste aktører innen feltet.]]></description>
+      <pubDate>25.07.2013</pubDate>
+      <link>http://open.bekk.no/oppdag-nye-verdener-med-kreativ-datavisualisering</link>
+    </item>
+    <item>
+      <title>Svarer du egentlig på det brukeren lurer på?</title>
+      <description><![CDATA[]]></description>
+      <pubDate>19.07.2013</pubDate>
+      <link>http://open.bekk.no/svarer-du-egentlig-pa-det-brukeren-lurer-pa</link>
+    </item>
+    <item>
+      <title>Anbefalinger fra NDC 2013</title>
+      <description><![CDATA[NDC 2013 ble i år avholdt i perioden 10.-14. juni i Oslo Spektrum. BEKK var godt representert både med deltakere, foredragsholdere og egen stand. Her er våre anbefalinger nå som videoene er tilgjengelig på vimeo.]]></description>
+      <pubDate>04.07.2013</pubDate>
+      <link>http://open.bekk.no/anbefalinger-fra-ndc-2013</link>
+    </item>
+    <item>
+      <title>BEKKs teknologiradar er lansert</title>
+      <description><![CDATA[Fagmiljøene i BEKK har tatt en titt i krystallkulen og kommet frem til teknologier som vi har tro på - og de som etter vår mening definitivt IKKE har livets rett.]]></description>
+      <pubDate>28.06.2013</pubDate>
+      <link>http://open.bekk.no/teknologiradar</link>
+    </item>
+    <item>
+      <title>DevIntersection, Angle Brackets og Curly Braces i Las Vegas</title>
+      <description><![CDATA[Vi har nettopp kommet tilbake fra Las Vegas etter å ha deltatt på den relativt nye DevIntersection konferansen som ble arrangert der i forrige uke. DevIntersection er en konferanse som fokuserer på Microsoft .NET utvikling for desktop, web og mobile platformer og arrangeres sammen med konferansene SQLIntersection og web-fokuserte Angle Brackets.]]></description>
+      <pubDate>16.04.2013</pubDate>
+      <link>http://open.bekk.no/devintersection-i-las-vegas</link>
+    </item>
+  </channel>
+</rss>
