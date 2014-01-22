@@ -11,5 +11,5 @@ func main() {
 	m.Get("/api/feeds", FetchFeeds)
 	m.Post("/api/feed", AddFeed)
 
-	http.ListenAndServe(":8080", m)
+	http.ListenAndServe(":"+os.Getenv("PORT"), m)
 }
