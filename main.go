@@ -1,15 +1,28 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
-	"github.com/henriwi/gorss/hub"
+	"fmt"
+	"github.com/codegangsta/martini"
+	"html/template"
 	"net/http"
 )
 
+func Main(w http.ResponseWriter, req *http.Request) {
+	t, err := template.ParseFiles("index.html")
+
+	if err != nil {
+		fmt.Printf("%s", err)
+		return
+	}
+
+	t.Execute(w, req.Host)
+}
+
 func main() {
-	hub.FetchFeeds()
-	r := mux.NewRouter()
-	r.HandleFunc("/feeds", hub.FeedsHandler)
-	http.Handle("/", r)
-	http.ListenAndServe(":8080", nil)
+	m := martini.Classic()
+	m.Get("/", Main)
+	m.Get("/feeds", FetchFeeds)
+	m.Post("/feed", AddFeed)
+
+	http.ListenAndServe(":8080", m)
 }
