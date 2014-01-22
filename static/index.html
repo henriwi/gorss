@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" ng-app="gorss">
+<head>
+  <meta charset="utf-8">
+  <title>Go RSS!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
+  <script src="js/app.js"></script>
+</head>
+<body ng-controller="FeedsCtrl"> 
+
+<div class="container">
+	<div class="row">
+		<a href="#" ng-click="update()">Update feeds</a>
+	</div>
+  <div class="row" ng-repeat="feed in feeds">
+    <h2>{{feed.Title}}</h2>
+		<div ng-repeat="item in feed.Items">
+    	<a href="{{item.Link}}">{{item.Title}}</a>
+    	<p>{{item.Content}}</p>
+    </div>
+  </div>
+ </div>
+</body>
+</html>
