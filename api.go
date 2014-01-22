@@ -15,7 +15,7 @@ type HttpResponse struct {
 }
 
 var urls = map[string]*rss.Feed{
-	"http://localhost:8081" : nil,
+	"http://www.aftenposten.no/rss/?kat=nyheter_iriks" : nil,
 	"http://www.vg.no/rss/create.php?categories=20&keywords=&limit=10": nil,
 }
 
