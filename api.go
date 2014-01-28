@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/SlyMarbo/rss"
 	"net/http"
 	"time"
+	"github.com/SlyMarbo/rss"
+	"io/ioutil"
 )
 
 type HttpResponse struct {
@@ -15,7 +16,7 @@ type HttpResponse struct {
 }
 
 var urls = map[string]*rss.Feed{
-	"http://www.aftenposten.no/rss/?kat=nyheter_iriks" : nil,
+	// "http://www.aftenposten.no/rss/?kat=nyheter_iriks" : nil,
 	"http://www.vg.no/rss/create.php?categories=20&keywords=&limit=10": nil,
 }
 
@@ -72,9 +73,16 @@ func asyncFetchFeeds() []*HttpResponse {
 	return responses
 }
 
-func AddFeed(req *http.Request) int {
-	url := req.FormValue("url")
-	fmt.Printf("Adding %s\n", url)
-	urls[url] = nil
-	return http.StatusOK
+func AddFeed(writer http.ResponseWriter, req *http.Request) {
+	body, _ := ioutil.ReadAll(req.Body)
+	var objmap map[string]string
+	json.Unmarshal([]byte(body), &objmap)
+
+	var newUrl = objmap["url"]
+	if (urls[newUrl] == nil) {
+		urls[newUrl] = nil	
+	 	writer.WriteHeader(http.StatusCreated)
+	} else {
+		writer.WriteHeader(http.StatusBadRequest)
+	}
 }

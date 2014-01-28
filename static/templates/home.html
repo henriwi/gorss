@@ -1,0 +1,25 @@
+<div class="container">
+	<div class="row">
+		<span ng-click="update()"><i class="fa fa-refresh fa-3x"></i></span>
+	</div>
+  <div class="row feed" ng-click="feed.Items.IsVisible = !feed.Items.IsVisible" ng-repeat="feed in feeds">
+    <h2><i class="fa fa-rss fa-1x"></i>{{feed.Title}}</h2>
+    <div class="items" ng-show="feed.Items.IsVisible">
+      <div class="item" ng-repeat="item in feed.Items">
+        <a href="{{item.Link}}" target="_blank">{{item.Title}}</a>
+        <p>{{item.Content}}</p>
+        <span>{{item.Date | date: 'dd.MM.yyyy hh:mm'}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <form ng-submit="addFeed()">
+      <div class="input-group">
+        <input ng-model="url" type="text" name="url" class="form-control" required>
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit">Add feed!</button>
+        </span>
+      </div>
+    </form>
+  </div>
+ </div>
