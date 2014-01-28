@@ -10,29 +10,29 @@ import (
 )
 
 type HttpResponse struct {
-	url  string
 	feed *rss.Feed
 	err  error
 }
 
-var urls = map[string]*rss.Feed{
-	// "http://www.aftenposten.no/rss/?kat=nyheter_iriks" : nil,
-	"http://www.vg.no/rss/create.php?categories=20&keywords=&limit=10": nil,
-}
+var feed1 = &rss.Feed{UpdateURL: "http://www.vg.no/rss/create.php?categories=20&keywords=&limit=10"}
+
+var feeds = []*rss.Feed{feed1}
+
+// "http://www.aftenposten.no/rss/?kat=nyheter_iriks" : nil,
 
 func FetchFeeds(writer http.ResponseWriter, request *http.Request) {
 	responses := asyncFetchFeeds()
 
-	feeds := []*rss.Feed{}
+	result := []*rss.Feed{}
 	for _, r := range responses {
 		if r.err != nil {
 			fmt.Printf("Error in response %s\n", r.err)
 		} else {
-			feeds = append(feeds, r.feed)
+			result = append(result, r.feed)
 		}
 	}
 
-	jsonResult, _ := json.Marshal(feeds)
+	jsonResult, _ := json.Marshal(result)
 	fmt.Fprintf(writer, string(jsonResult))
 }
 
@@ -40,30 +40,20 @@ func asyncFetchFeeds() []*HttpResponse {
 	ch := make(chan *HttpResponse)
 	responses := []*HttpResponse{}
 
-	for url, feed := range urls {
-		if feed != nil {
-			fmt.Printf("Updating %s\n", url)
-			go func(url string, feed *rss.Feed) {
+	for _, feed := range feeds {
+		fmt.Printf("Fetching %s\n", feed)
+			go func(feed *rss.Feed) {
 				err := feed.Update()
-				ch <- &HttpResponse{url, feed, err}
-			}(url, feed)
-		} else {
-			fmt.Printf("Fetching new %s\n", url)
-			go func(url string) {
-				fmt.Printf("Fetching %s \n", url)
-				feed, err := rss.Fetch(url)
-				urls[url] = feed
-				ch <- &HttpResponse{url, feed, err}
-			}(url)
-		}
+				ch <- &HttpResponse{feed, err}
+			}(feed)
 	}
 
 	for {
 		select {
 		case r := <-ch:
-			fmt.Printf("%s was fetched\n", r.url)
+			fmt.Printf("%s was fetched\n", r.feed)
 			responses = append(responses, r)
-			if len(responses) == len(urls) {
+			if len(responses) == len(feeds) {
 				return responses
 			}
 		case <-time.After(50 * time.Millisecond):
@@ -79,10 +69,8 @@ func AddFeed(writer http.ResponseWriter, req *http.Request) {
 	json.Unmarshal([]byte(body), &objmap)
 
 	var newUrl = objmap["url"]
-	if (urls[newUrl] == nil) {
-		urls[newUrl] = nil	
-	 	writer.WriteHeader(http.StatusCreated)
-	} else {
-		writer.WriteHeader(http.StatusBadRequest)
-	}
+	newFeed := &rss.Feed{UpdateURL: newUrl}
+	feeds = append(feeds, newFeed)
+
+ 	writer.WriteHeader(http.StatusCreated)
 }
