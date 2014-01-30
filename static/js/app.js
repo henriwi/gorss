@@ -35,9 +35,14 @@ gorss.controller("HomeCtrl", ["$scope", "Feed", "$http", function($scope, Feed, 
       method: "POST",
       url: "/api/feed",
       data: {url: $scope.url}
+    }).success(function() {
+      $scope.feeds = Feed.query();
     });
-		// Feed.save("url:" + $scope.url);
-    $scope.feeds = Feed.query();
+
+    // Feed.save("url:" + $scope.url);
+    // $scope.feeds.push({Title: $scope.url})
+
+    $scope.url = "";
 	}
 
 }]);

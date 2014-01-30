@@ -14,14 +14,14 @@ type HttpResponse struct {
 	err  error
 }
 
-var feed1 = &rss.Feed{UpdateURL: "http://www.vg.no/rss/create.php?categories=20&keywords=&limit=10"}
-
-var feeds = []*rss.Feed{feed1}
-
-// "http://www.aftenposten.no/rss/?kat=nyheter_iriks" : nil,
-
 func FetchFeeds(writer http.ResponseWriter, request *http.Request) {
-	responses := asyncFetchFeeds()
+	feeds := GetAll()
+
+	if (len(feeds) == 0) {
+		return
+	}
+
+	responses := asyncFetchFeeds(feeds)
 
 	result := []*rss.Feed{}
 	for _, r := range responses {
@@ -36,12 +36,12 @@ func FetchFeeds(writer http.ResponseWriter, request *http.Request) {
 	fmt.Fprintf(writer, string(jsonResult))
 }
 
-func asyncFetchFeeds() []*HttpResponse {
+func asyncFetchFeeds(feeds []*rss.Feed) []*HttpResponse {
 	ch := make(chan *HttpResponse)
 	responses := []*HttpResponse{}
 
 	for _, feed := range feeds {
-		fmt.Printf("Fetching %s\n", feed)
+		fmt.Printf("Fetching %s\n", feed.UpdateURL)
 			go func(feed *rss.Feed) {
 				err := feed.Update()
 				ch <- &HttpResponse{feed, err}
@@ -51,7 +51,7 @@ func asyncFetchFeeds() []*HttpResponse {
 	for {
 		select {
 		case r := <-ch:
-			fmt.Printf("%s was fetched\n", r.feed)
+			fmt.Printf("%s was fetched\n", r.feed.UpdateURL)
 			responses = append(responses, r)
 			if len(responses) == len(feeds) {
 				return responses
@@ -68,9 +68,14 @@ func AddFeed(writer http.ResponseWriter, req *http.Request) {
 	var objmap map[string]string
 	json.Unmarshal([]byte(body), &objmap)
 
-	var newUrl = objmap["url"]
-	newFeed := &rss.Feed{UpdateURL: newUrl}
-	feeds = append(feeds, newFeed)
+	var url = objmap["url"]
+	feed, err := rss.Fetch(url)
 
+	if (err != nil) {
+		fmt.Printf("Error fetching feed %s", err)
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = Add(feed)
  	writer.WriteHeader(http.StatusCreated)
 }
