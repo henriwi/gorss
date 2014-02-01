@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/SlyMarbo/rss"
 	"errors"
+	"fmt"
 )
 
 var feed1 = &rss.Feed{UpdateURL: "http://www.vg.no/rss/create.php?categories=20&keywords=&limit=10"}
@@ -28,4 +29,11 @@ func feedExists(feed *rss.Feed) bool {
 
 func GetAll() []*rss.Feed {
 	return feeds
+}
+
+func MarkItemUnread(feedIndex int, itemIndex int) {
+	feed := feeds[feedIndex]
+	item := feed.Items[itemIndex]
+	fmt.Printf("Markin %s as read", item)
+	item.Read = true
 }

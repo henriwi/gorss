@@ -7,6 +7,8 @@ import (
 	"time"
 	"github.com/SlyMarbo/rss"
 	"io/ioutil"
+	"github.com/codegangsta/martini"
+	"strconv"
 )
 
 type HttpResponse struct {
@@ -44,6 +46,7 @@ func asyncFetchFeeds(feeds []*rss.Feed) []*HttpResponse {
 		fmt.Printf("Fetching %s\n", feed.UpdateURL)
 			go func(feed *rss.Feed) {
 				err := feed.Update()
+				time.Sleep(500 * time.Millisecond)
 				ch <- &HttpResponse{feed, err}
 			}(feed)
 	}
@@ -78,4 +81,14 @@ func AddFeed(writer http.ResponseWriter, req *http.Request) {
 	}
 	err = Add(feed)
  	writer.WriteHeader(http.StatusCreated)
+	jsonResult, _ := json.Marshal(feed)
+	fmt.Fprintf(writer, string(jsonResult))
+}
+
+func MarkUnread(writer http.ResponseWriter, req *http.Request, params martini.Params) {
+	feedIndex, _ := strconv.Atoi(params["fid"]);
+	itemIndex, _ := strconv.Atoi(params["iid"]);
+
+	MarkItemUnread(feedIndex, itemIndex)
+	writer.WriteHeader(http.StatusOK)
 }
