@@ -43,6 +43,14 @@ gorss.controller("HomeCtrl", ["$scope", "Feed", "$http", "$window", function($sc
       data: {url: $scope.url}
     }).success(function(data) {
       $scope.feeds.push(data);
+    }).error(function(data) {
+      $(".alert-danger").fadeIn(500);
+      setTimeout(function() {
+        $scope.$apply(function(){
+          // $scope.error = false;
+          $(".alert-danger").fadeOut(500);
+        });
+      }, 2000);
     });
 
     // Feed.save("url:" + $scope.url);
