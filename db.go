@@ -10,9 +10,11 @@ var feed1 = &rss.Feed{UpdateURL: "http://www.vg.no/rss/create.php?categories=20&
 
 var feeds = []*rss.Feed{feed1}
 
-func Add(feed *rss.Feed) error {
+type DB struct {}
+
+func (db DB) Add(feed *rss.Feed) error {
 	if (feedExists(feed)) {
-		return errors.New("Feed with UpdateURL already exists")
+		return errors.New("Feed already exists")
 	}
 	feeds = append(feeds, feed)
 	return nil
@@ -27,13 +29,13 @@ func feedExists(feed *rss.Feed) bool {
 	return false
 }
 
-func GetAll() []*rss.Feed {
+func (db DB) GetAll() []*rss.Feed {
 	return feeds
 }
 
-func MarkItemUnread(feedIndex int, itemIndex int) {
+func (db DB) MarkItemUnread(feedIndex int, itemIndex int) {
 	feed := feeds[feedIndex]
 	item := feed.Items[itemIndex]
-	fmt.Printf("Markin %s as read", item)
+	fmt.Printf("Markin %s as read\n", item)
 	item.Read = true
 }

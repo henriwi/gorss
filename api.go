@@ -16,8 +16,10 @@ type HttpResponse struct {
 	err  error
 }
 
+var db = new(DB)
+
 func FetchFeeds(writer http.ResponseWriter, request *http.Request) {
-	feeds := GetAll()
+	feeds := db.GetAll()
 
 	if (len(feeds) == 0) {
 		return
@@ -79,16 +81,24 @@ func AddFeed(writer http.ResponseWriter, req *http.Request) {
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	err = Add(feed)
+
+	err = db.Add(feed)
+
+	if (err != nil) {
+		fmt.Printf("%s\n", err)
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
  	writer.WriteHeader(http.StatusCreated)
 	jsonResult, _ := json.Marshal(feed)
 	fmt.Fprintf(writer, string(jsonResult))
 }
 
 func MarkUnread(writer http.ResponseWriter, req *http.Request, params martini.Params) {
-	feedIndex, _ := strconv.Atoi(params["fid"]);
-	itemIndex, _ := strconv.Atoi(params["iid"]);
+	feedIndex, _ := strconv.Atoi(params["_0"]);
+	itemIndex, _ := strconv.Atoi(params["_1"]);
 
-	MarkItemUnread(feedIndex, itemIndex)
+	db.MarkItemUnread(feedIndex, itemIndex)
 	writer.WriteHeader(http.StatusOK)
 }
