@@ -3,10 +3,6 @@ var gorss = angular.module('gorss', ["feedService"]);
 gorss.config(function($locationProvider, $routeProvider) {
   // $locationProvider.html5Mode(true);
   $routeProvider.
-    when('/feed/:url', {
-      templateUrl: 'templates/feed.html',
-      controller: 'FeedCtrl'
-    }).
     when('/', {
       templateUrl: 'templates/home.html',
       controller: "HomeCtrl"
@@ -59,6 +55,15 @@ gorss.controller("HomeCtrl", ["$scope", "Feed", "$http", "$window", function($sc
     $scope.url = "";
 	}
 
+  $scope.delete = function(feedIndex) {
+    $scope.feeds.splice(feedIndex, 1);
+
+    $http({
+      method: "DELETE",
+      url: "/api/feed/"+feedIndex
+    })
+  }
+
   $scope.markUnread = function(link, feedIndex, itemIndex) {
     $scope.feeds[feedIndex].Items[itemIndex].Read = true
 
@@ -70,18 +75,5 @@ gorss.controller("HomeCtrl", ["$scope", "Feed", "$http", "$window", function($sc
 
     $window.open(link);
   };
-
-}]);
-
-gorss.controller("FeedCtrl", ["$scope", "Feed", function($scope, Feed, $routeParams) {
-	var url = $routeParams.url;
-	$scope.feeds = Feed.query();
-
-  $scope.loading = true;
-
-	$scope.update = function() {
-		$scope.feeds = Feed.query();
-    $scope.loading = false;
-	};
 
 }]);

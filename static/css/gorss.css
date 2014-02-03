@@ -39,6 +39,12 @@ li {
 	padding: 1em;
 }
 
+.delete {
+	display: inline-block;
+	float: right;
+	cursor: pointer;
+}
+
 .read {
 	color: #cccccc
 }

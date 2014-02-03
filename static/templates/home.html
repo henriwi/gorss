@@ -13,6 +13,7 @@
 </div>
 
 <div class="feed" ng-repeat="feed in feeds">
+  <span class="delete" ng-click="delete($index)"><i class="fa fa-times fa-2x"></i></span>
   <h2 ng-click="feed.Items.IsVisible = !feed.Items.IsVisible" ><i class="fa fa-rss fa-1x"></i>{{feed.Title}}</h2>
   <ul class="items" ng-show="feed.Items.IsVisible">
     <li class="item" ng-class="{'read': item.Read}" ng-repeat="item in feed.Items">

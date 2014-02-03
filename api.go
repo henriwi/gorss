@@ -95,6 +95,12 @@ func AddFeed(writer http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(writer, string(jsonResult))
 }
 
+func DeleteFeed(writer http.ResponseWriter, req *http.Request, params martini.Params) {
+	feedIndex, _ := strconv.Atoi(params["id"])
+	db.DeleteFeed(feedIndex)
+	writer.WriteHeader(http.StatusOK)
+}
+
 func MarkUnread(writer http.ResponseWriter, req *http.Request, params martini.Params) {
 	feedIndex, _ := strconv.Atoi(params["_0"]);
 	itemIndex, _ := strconv.Atoi(params["_1"]);

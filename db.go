@@ -33,6 +33,19 @@ func (db DB) GetAll() []*rss.Feed {
 	return feeds
 }
 
+func (db DB) DeleteFeed(feedIndex int) {
+	feed := feeds[feedIndex]
+	temp := []*rss.Feed{}
+
+
+	for _, v := range feeds {
+		if (v.UpdateURL != feed.UpdateURL) {
+			temp = append(temp, v)
+		}
+	}
+	feeds = temp
+}
+
 func (db DB) MarkItemUnread(feedIndex int, itemIndex int) {
 	feed := feeds[feedIndex]
 	item := feed.Items[itemIndex]
