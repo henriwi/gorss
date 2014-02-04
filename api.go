@@ -48,7 +48,6 @@ func asyncFetchFeeds(feeds []*rss.Feed) []*HttpResponse {
 		fmt.Printf("Fetching %s\n", feed.UpdateURL)
 			go func(feed *rss.Feed) {
 				err := feed.Update()
-				time.Sleep(500 * time.Millisecond)
 				ch <- &HttpResponse{feed, err}
 			}(feed)
 	}
