@@ -3,12 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"time"
 	"github.com/SlyMarbo/rss"
-	"io/ioutil"
 	"github.com/codegangsta/martini"
+	"io/ioutil"
+	"net/http"
 	"strconv"
+	"time"
 )
 
 type HttpResponse struct {
@@ -21,7 +21,7 @@ var db = new(DB)
 func FetchFeeds(writer http.ResponseWriter, request *http.Request) {
 	feeds := db.GetAll()
 
-	if (len(feeds) == 0) {
+	if len(feeds) == 0 {
 		return
 	}
 
@@ -46,10 +46,10 @@ func asyncFetchFeeds(feeds []*rss.Feed) []*HttpResponse {
 
 	for _, feed := range feeds {
 		fmt.Printf("Fetching %s\n", feed.UpdateURL)
-			go func(feed *rss.Feed) {
-				err := feed.Update()
-				ch <- &HttpResponse{feed, err}
-			}(feed)
+		go func(feed *rss.Feed) {
+			err := feed.Update()
+			ch <- &HttpResponse{feed, err}
+		}(feed)
 	}
 
 	for {
@@ -75,7 +75,7 @@ func AddFeed(writer http.ResponseWriter, req *http.Request) {
 	var url = objmap["url"]
 	feed, err := rss.Fetch(url)
 
-	if (err != nil) {
+	if err != nil {
 		fmt.Printf("Error fetching feed %s", err)
 		writer.WriteHeader(http.StatusBadRequest)
 		return
@@ -83,13 +83,13 @@ func AddFeed(writer http.ResponseWriter, req *http.Request) {
 
 	err = db.Add(feed)
 
-	if (err != nil) {
+	if err != nil {
 		fmt.Printf("%s\n", err)
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
- 	writer.WriteHeader(http.StatusCreated)
+	writer.WriteHeader(http.StatusCreated)
 	jsonResult, _ := json.Marshal(feed)
 	fmt.Fprintf(writer, string(jsonResult))
 }
@@ -101,8 +101,8 @@ func DeleteFeed(writer http.ResponseWriter, req *http.Request, params martini.Pa
 }
 
 func MarkUnread(writer http.ResponseWriter, req *http.Request, params martini.Params) {
-	feedIndex, _ := strconv.Atoi(params["_0"]);
-	itemIndex, _ := strconv.Atoi(params["_1"]);
+	feedIndex, _ := strconv.Atoi(params["_0"])
+	itemIndex, _ := strconv.Atoi(params["_1"])
 
 	db.MarkItemUnread(feedIndex, itemIndex)
 	writer.WriteHeader(http.StatusOK)
