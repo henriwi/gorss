@@ -31,7 +31,7 @@ gorss.controller("HomeCtrl", ["$scope", "Feed", "$http", "$window", function($sc
     });
 	};
 
-	$scope.addFeed = function() {
+  $scope.addFeed = function() {
     $http({
       method: "POST",
       url: "/api/feed",

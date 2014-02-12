@@ -14,6 +14,11 @@
 			"ImportPath": "github.com/codegangsta/martini",
 			"Comment": "v0.1-52-g50f2d3f",
 			"Rev": "50f2d3f9d7eebef98b1a5dcf29dad72c66e918a7"
+		},
+		{
+			"ImportPath": "labix.org/v2/mgo",
+			"Comment": "263",
+			"Rev": "gustavo@niemeyer.net-20140126000127-qe9fwt48ceby11ts"
 		}
 	]
 }
