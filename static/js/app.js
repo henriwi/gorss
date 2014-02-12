@@ -1,7 +1,6 @@
 var gorss = angular.module('gorss', ["feedService"]);
 
 gorss.config(function($locationProvider, $routeProvider) {
-  // $locationProvider.html5Mode(true);
   $routeProvider.
     when('/', {
       templateUrl: 'templates/home.html',
@@ -43,35 +42,36 @@ gorss.controller("HomeCtrl", ["$scope", "Feed", "$http", "$window", function($sc
       $(".alert-danger").fadeIn(500);
       setTimeout(function() {
         $scope.$apply(function(){
-          // $scope.error = false;
           $(".alert-danger").fadeOut(500);
         });
       }, 2000);
     });
 
-    // Feed.save("url:" + $scope.url);
-    // $scope.feeds.push({Title: $scope.url})
-
     $scope.url = "";
 	}
 
   $scope.delete = function(feedIndex) {
-    $scope.feeds.splice(feedIndex, 1);
-
+    var feed = $scope.feeds[feedIndex];
+    
     $http({
       method: "DELETE",
-      url: "/api/feed/"+feedIndex
+      url: "/api/feed/",
+      data: {url: feed.UpdateURL}
     })
+
+    $scope.feeds.splice(feedIndex, 1);
   }
 
   $scope.markUnread = function(link, feedIndex, itemIndex) {
-    $scope.feeds[feedIndex].Items[itemIndex].Read = true
+    var item = $scope.feeds[feedIndex].Items[itemIndex];
 
     $http({
       method: "POST",
-      url: "/api/feed/"+feedIndex+"/item/"+itemIndex+"/read",
-      data: {url: $scope.url}
+      url: "/api/feed/read",
+      data: {id: item.ID}
     });
+
+    item.Read = true
 
     $window.open(link);
   };

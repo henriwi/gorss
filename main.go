@@ -11,8 +11,8 @@ func main() {
 	m.Use(martini.Static("static"))
 	m.Get("/api/feed", FetchFeeds)
 	m.Post("/api/feed", AddFeed)
-	m.Delete("/api/feed/:id", DeleteFeed)
-	m.Post("/api/feed/:id/item/:id/read", MarkUnread)
+	m.Delete("/api/feed", DeleteFeed)
+	m.Post("/api/feed/read", MarkUnread)
 
 	http.ListenAndServe(":"+os.Getenv("PORT"), m)
 }

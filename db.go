@@ -1,54 +1,84 @@
 package main
 
 import (
-	"github.com/SlyMarbo/rss"
 	"errors"
 	"fmt"
+	"github.com/SlyMarbo/rss"
+	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
+	"os"
 )
 
-var feed1 = &rss.Feed{UpdateURL: "http://www.vg.no/rss/create.php?categories=20&keywords=&limit=10"}
+type DB struct{}
 
-var feeds = []*rss.Feed{feed1}
+var (
+	mgoSession   *mgo.Session
+	dbName = "simplyrss"
+)
 
-type DB struct {}
+func getSession() *mgo.Session {
+	if mgoSession == nil {
+		url := os.Getenv("MONGODB_URL")
+
+		if url == "" {
+			fmt.Println("Connection url is empty\n")
+		}
+
+		var err error
+		mgoSession, err = mgo.Dial(url)
+		if err != nil {
+			fmt.Printf("Error when connecting to db %s\n", err)
+		}
+	}
+	return mgoSession.Clone()
+}
 
 func (db DB) Add(feed *rss.Feed) error {
-	if (feedExists(feed)) {
+	sess := getSession()
+	defer sess.Close()
+
+	collection := sess.DB(dbName).C("feeds")
+
+	var existingFeed *rss.Feed
+	collection.Find(bson.M{"updateurl": feed.UpdateURL}).One(&existingFeed)
+
+	if existingFeed != nil {
 		return errors.New("Feed already exists")
 	}
-	feeds = append(feeds, feed)
+
+	err := collection.Insert(feed)
+	if err != nil {
+		fmt.Printf("Can't insert feed: %v\n", err)
+		return err
+	}
+
 	return nil
 }
 
-func feedExists(feed *rss.Feed) bool {
-	for _, v := range feeds {
-		if (v.UpdateURL == feed.UpdateURL) {
-			return true
-		}
-	}
-	return false
-}
-
 func (db DB) GetAll() []*rss.Feed {
+	sess := getSession()
+	defer sess.Close()
+
+	collection := sess.DB(dbName).C("feeds")
+
+	var feeds []*rss.Feed
+	collection.Find(nil).All(&feeds)
 	return feeds
 }
 
-func (db DB) DeleteFeed(feedIndex int) {
-	feed := feeds[feedIndex]
-	temp := []*rss.Feed{}
+func (db DB) DeleteFeed(updateURL string) {
+	sess := getSession()
+	defer sess.Close()
 
-
-	for _, v := range feeds {
-		if (v.UpdateURL != feed.UpdateURL) {
-			temp = append(temp, v)
-		}
-	}
-	feeds = temp
+	collection := sess.DB(dbName).C("feeds")
+	
+	_ = collection.Remove(bson.M{"updateurl": updateURL})
 }
 
-func (db DB) MarkItemUnread(feedIndex int, itemIndex int) {
-	feed := feeds[feedIndex]
-	item := feed.Items[itemIndex]
-	fmt.Printf("Markin %s as read\n", item)
-	item.Read = true
+func (db DB) MarkItemUnread(id string) {
+	sess := getSession()
+	defer sess.Close()
+
+	collection := sess.DB(dbName).C("feeds")
+	_ = collection.Update(bson.M{"items.id": id}, bson.M{"$set": bson.M{"items.$.read": true}})
 }

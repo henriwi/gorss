@@ -7,7 +7,6 @@ import (
 	"github.com/codegangsta/martini"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -95,15 +94,23 @@ func AddFeed(writer http.ResponseWriter, req *http.Request) {
 }
 
 func DeleteFeed(writer http.ResponseWriter, req *http.Request, params martini.Params) {
-	feedIndex, _ := strconv.Atoi(params["id"])
-	db.DeleteFeed(feedIndex)
+	body, _ := ioutil.ReadAll(req.Body)
+	var objmap map[string]string
+	json.Unmarshal([]byte(body), &objmap)
+
+	var url = objmap["url"]
+
+	db.DeleteFeed(url)
 	writer.WriteHeader(http.StatusOK)
 }
 
 func MarkUnread(writer http.ResponseWriter, req *http.Request, params martini.Params) {
-	feedIndex, _ := strconv.Atoi(params["_0"])
-	itemIndex, _ := strconv.Atoi(params["_1"])
+	body, _ := ioutil.ReadAll(req.Body)
+	var objmap map[string]string
+	json.Unmarshal([]byte(body), &objmap)
 
-	db.MarkItemUnread(feedIndex, itemIndex)
+	var id = objmap["id"]
+
+	db.MarkItemUnread(id)
 	writer.WriteHeader(http.StatusOK)
 }
