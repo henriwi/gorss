@@ -18,7 +18,7 @@ var (
 
 func getSession() *mgo.Session {
 	if mgoSession == nil {
-		url := os.Getenv("MONGODB_URL")
+		url := os.Getenv("MONGOHQ_URL")
 
 		if url == "" {
 			fmt.Println("Connection url is empty\n")
