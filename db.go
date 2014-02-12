@@ -7,19 +7,24 @@ import (
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"os"
+	"strings"
 )
 
 type DB struct{}
 
 var (
 	mgoSession   *mgo.Session
-	dbName = "simplyrss"
+	dbName string
 )
 
 func getSession() *mgo.Session {
 	if mgoSession == nil {
 		url := os.Getenv("MONGOHQ_URL")
 
+		slashIndex := strings.LastIndex(url, "/")
+		dbName = url[slashIndex + 1:len(url)]
+		fmt.Printf("DBName: %s\n", dbName)
+		
 		if url == "" {
 			fmt.Println("Connection url is empty\n")
 		}
@@ -71,7 +76,7 @@ func (db DB) DeleteFeed(updateURL string) {
 	defer sess.Close()
 
 	collection := sess.DB(dbName).C("feeds")
-	
+
 	_ = collection.Remove(bson.M{"updateurl": updateURL})
 }
 
