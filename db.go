@@ -17,29 +17,35 @@ var (
 	dbName string
 )
 
-func getSession() *mgo.Session {
+func getSession() (*mgo.Session, error) {
 	if mgoSession == nil {
 		url := os.Getenv("MONGOHQ_URL")
 
-		slashIndex := strings.LastIndex(url, "/")
-		dbName = url[slashIndex + 1:len(url)]
-		fmt.Printf("DBName: %s\n", dbName)
-		
 		if url == "" {
 			fmt.Println("Connection url is empty\n")
+			return nil, errors.New("Connection url is empty")
 		}
+
+		slashIndex := strings.LastIndex(url, "/")
+		dbName = url[slashIndex + 1:len(url)]
 
 		var err error
 		mgoSession, err = mgo.Dial(url)
 		if err != nil {
 			fmt.Printf("Error when connecting to db %s\n", err)
+			return nil, err
 		}
 	}
-	return mgoSession.Clone()
+	return mgoSession.Clone(), nil
 }
 
 func (db DB) Add(feed *rss.Feed) error {
-	sess := getSession()
+	sess, err := getSession()
+
+	if err != nil {
+		return err
+	}
+
 	defer sess.Close()
 
 	collection := sess.DB(dbName).C("feeds")
@@ -51,7 +57,7 @@ func (db DB) Add(feed *rss.Feed) error {
 		return errors.New("Feed already exists")
 	}
 
-	err := collection.Insert(feed)
+	err = collection.Insert(feed)
 	if err != nil {
 		fmt.Printf("Can't insert feed: %v\n", err)
 		return err
@@ -60,30 +66,59 @@ func (db DB) Add(feed *rss.Feed) error {
 	return nil
 }
 
-func (db DB) GetAll() []*rss.Feed {
-	sess := getSession()
+func (db DB) GetAll() ([]*rss.Feed, error) {
+	sess, err := getSession()
+
+	if err != nil {
+		return nil, err
+	}
+
 	defer sess.Close()
 
 	collection := sess.DB(dbName).C("feeds")
 
 	var feeds []*rss.Feed
 	collection.Find(nil).All(&feeds)
-	return feeds
+	return feeds, nil
 }
 
-func (db DB) DeleteFeed(updateURL string) {
-	sess := getSession()
+func (db DB) DeleteFeed(updateURL string)  error {
+	sess, err := getSession()
+
+	if err != nil {
+		return err
+	}
+
 	defer sess.Close()
 
 	collection := sess.DB(dbName).C("feeds")
 
-	_ = collection.Remove(bson.M{"updateurl": updateURL})
+	err = collection.Remove(bson.M{"updateurl": updateURL})
+
+	if err != nil {
+		fmt.Printf("Error deleting feed: %v\n", err)
+		return err
+	}
+
+	return nil
 }
 
-func (db DB) MarkItemUnread(id string) {
-	sess := getSession()
+func (db DB) MarkItemUnread(id string) error {
+	sess, err := getSession()
+
+	if err != nil {
+		return err
+	}
+
 	defer sess.Close()
 
 	collection := sess.DB(dbName).C("feeds")
-	_ = collection.Update(bson.M{"items.id": id}, bson.M{"$set": bson.M{"items.$.read": true}})
+	err = collection.Update(bson.M{"items.id": id}, bson.M{"$set": bson.M{"items.$.read": true}})
+
+	if err != nil {
+		fmt.Printf("Error marking feed as read: %v\n", err)
+		return err
+	}
+
+	return nil
 }

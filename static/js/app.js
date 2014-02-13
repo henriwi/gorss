@@ -2,11 +2,11 @@ var gorss = angular.module('gorss', ["feedService"]);
 
 gorss.config(function($locationProvider, $routeProvider) {
   $routeProvider.
-    when('/', {
-      templateUrl: 'templates/home.html',
-      controller: "HomeCtrl"
-    }).
-    otherwise({redirectTo: '/404'});
+  when('/', {
+    templateUrl: 'templates/home.html',
+    controller: "HomeCtrl"
+  }).
+  otherwise({redirectTo: '/404'});
 });
 
 var feedService = angular.module("feedService", ["ngResource"]);
@@ -20,16 +20,18 @@ feedService.factory('Feed', ['$resource',
 
 gorss.controller("HomeCtrl", ["$scope", "Feed", "$http", "$window", function($scope, Feed, $http, $window) {
   $scope.loading = true;
-	$scope.feeds = Feed.query(function() {
+  $scope.feeds = Feed.query(function() {
+    $scope.loading = false;
+  }, function() {
     $scope.loading = false;
   });
 
-	$scope.update = function() {
+  $scope.update = function() {
     $scope.loading = true;
     $scope.feeds = Feed.query(function(data){
       $scope.loading = false;
     });
-	};
+  };
 
   $scope.addFeed = function() {
     $http({
@@ -48,7 +50,7 @@ gorss.controller("HomeCtrl", ["$scope", "Feed", "$http", "$window", function($sc
     });
 
     $scope.url = "";
-	}
+  }
 
   $scope.delete = function(feedIndex) {
     var feed = $scope.feeds[feedIndex];

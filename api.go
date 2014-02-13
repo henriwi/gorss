@@ -18,7 +18,11 @@ type HttpResponse struct {
 var db = new(DB)
 
 func FetchFeeds(writer http.ResponseWriter, request *http.Request) {
-	feeds := db.GetAll()
+	feeds, err := db.GetAll()
+
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+	}
 
 	if len(feeds) == 0 {
 		return
@@ -75,8 +79,8 @@ func AddFeed(writer http.ResponseWriter, req *http.Request) {
 	feed, err := rss.Fetch(url)
 
 	if err != nil {
-		fmt.Printf("Error fetching feed %s", err)
-		writer.WriteHeader(http.StatusBadRequest)
+		fmt.Printf("Error fetching feed %s\n", err)
+		writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -100,8 +104,13 @@ func DeleteFeed(writer http.ResponseWriter, req *http.Request, params martini.Pa
 
 	var url = objmap["url"]
 
-	db.DeleteFeed(url)
-	writer.WriteHeader(http.StatusOK)
+	err := db.DeleteFeed(url)
+
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+	} else {
+		writer.WriteHeader(http.StatusOK)
+	}
 }
 
 func MarkUnread(writer http.ResponseWriter, req *http.Request, params martini.Params) {
@@ -111,6 +120,11 @@ func MarkUnread(writer http.ResponseWriter, req *http.Request, params martini.Pa
 
 	var id = objmap["id"]
 
-	db.MarkItemUnread(id)
-	writer.WriteHeader(http.StatusOK)
+	err := db.MarkItemUnread(id)
+
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+	} else {
+		writer.WriteHeader(http.StatusOK)
+	}
 }

@@ -1,6 +1,6 @@
 <h1 class="text-center" ng-click="update()"><i class="fa fa-refresh" ng-class="{'fa-spin': loading}"></i>Simply RSS</h1>
 
-<div class="alert alert-danger">Oops! The feed you were trying to add already exists.</div>
+<div class="alert alert-danger">Oops! Something went wrong when adding the feed. Does it already exists?</div>
 <div>
   <form ng-submit="addFeed()">
     <div class="input-group">
@@ -18,7 +18,6 @@
   <ul class="items" ng-show="feed.Items.IsVisible">
     <li class="item" ng-class="{'read': item.Read}" ng-repeat="item in feed.Items">
       <div>
-      <!-- <a href="{{item.Link}}" target="_blank">{{item.Title}}</a> -->
       <a ng-click="markUnread(item.Link, $parent.$index, $index)">{{item.Title}}</a>
       <p>{{item.Content}}</p>
       <span>{{item.Date | date: 'dd.MM.yyyy hh:mm'}}</span>
