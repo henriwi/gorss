@@ -18,6 +18,7 @@ type HttpResponse struct {
 var db = new(DB)
 
 func FetchFeeds(writer http.ResponseWriter, request *http.Request) {
+	rss.CacheParsedItemIDs(false)
 	feeds, err := db.GetAll()
 
 	if err != nil {
