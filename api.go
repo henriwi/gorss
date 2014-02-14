@@ -33,11 +33,7 @@ func FetchFeeds(writer http.ResponseWriter, request *http.Request) {
 
 	result := []*rss.Feed{}
 	for _, r := range responses {
-		if r.err != nil {
-			fmt.Printf("Error in response %s\n", r.err)
-		} else {
 			result = append(result, r.feed)
-		}
 	}
 
 	jsonResult, _ := json.Marshal(result)
@@ -52,7 +48,14 @@ func asyncFetchFeeds(feeds []*rss.Feed) []*HttpResponse {
 		go func(f *rss.Feed) {
 			fmt.Printf("Fetching %s\n", f.UpdateURL)
 			feed, err := rss.Fetch(f.UpdateURL)
-			ch <- &HttpResponse{feed, err}
+
+			if err != nil {
+				fmt.Printf("Error in response %s. Using old feed.\n", err)
+				ch <- &HttpResponse{f, err}
+			} else {
+				ch <- &HttpResponse{feed, err}
+			}
+
 		}(feed)
 	}
 
@@ -64,11 +67,10 @@ func asyncFetchFeeds(feeds []*rss.Feed) []*HttpResponse {
 			if len(responses) == len(feeds) {
 				return responses
 			}
-		case <-time.After(50 * time.Millisecond):
-			fmt.Printf(".")
+		case <-time.After(5 * time.Second):
+			return responses
 		}
 	}
-	return responses
 }
 
 func AddFeed(writer http.ResponseWriter, req *http.Request) {
