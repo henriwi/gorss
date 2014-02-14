@@ -49,9 +49,9 @@ func asyncFetchFeeds(feeds []*rss.Feed) []*HttpResponse {
 	responses := []*HttpResponse{}
 
 	for _, feed := range feeds {
-		fmt.Printf("Fetching %s\n", feed.UpdateURL)
-		go func(feed *rss.Feed) {
-			err := feed.Update()
+		go func(f *rss.Feed) {
+			fmt.Printf("Fetching %s\n", f.UpdateURL)
+			feed, err := rss.Fetch(f.UpdateURL)
 			ch <- &HttpResponse{feed, err}
 		}(feed)
 	}
